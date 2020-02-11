@@ -40,6 +40,7 @@ if __name__ == '__main__':
         opt['max_num'] = opt['max_list'][0]
         opt['partition'] = 'two_linear'
         opt['step'] = 0.5
+        opt['cuda'] = False
         # here create model path
         opt['model_path'] = os.path.join('model',args.dataset)
         main(opt)

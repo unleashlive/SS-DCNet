@@ -27,6 +27,7 @@ def main(opt):
     dataset = opt['dataset']
     root_dir = opt['root_dir']
     num_workers = opt['num_workers']
+    cuda = opt['cuda']
     img_subsubdir = 'images'; tar_subsubdir = 'gtdens'
     transform_test = []
     # --1.3 use initial setting to generate
@@ -49,18 +50,27 @@ def main(opt):
     label_indice = torch.Tensor(label_indice)
     class_num = len(label_indice)+1
     div_times = opt['div_times']
-    net = SSDCNet_classify(class_num,label_indice,div_times=div_times,\
+    if cuda:
+        net = SSDCNet_classify(class_num,label_indice,div_times=div_times,\
             frontend_name='VGG16',block_num=5,\
             IF_pre_bn=False,IF_freeze_bn=False,load_weights=True,\
             psize=opt['psize'],pstride = opt['pstride'],parse_method ='maxp').cuda()
+    else:
+        net = SSDCNet_classify(class_num,label_indice,div_times=div_times,\
+            frontend_name='VGG16',block_num=5,\
+            IF_pre_bn=False,IF_freeze_bn=False,load_weights=True,\
+            psize=opt['psize'],pstride = opt['pstride'],parse_method ='maxp').cpu()
     # test the min epoch
     mod_path='best_epoch.pth' 
     mod_path=os.path.join(opt['model_path'] ,mod_path)
     if os.path.exists(mod_path):
-        all_state_dict = torch.load(mod_path)
+        if cuda:
+            all_state_dict = torch.load(mod_path)
+        else:
+            all_state_dict = torch.load(mod_path,map_location='cpu')
         net.load_state_dict(all_state_dict['net_state_dict'])
         tmp_epoch_num = all_state_dict['tmp_epoch_num']
         log_save_path = os.path.join(save_folder,'log-epoch-min[%d]-%s.txt' \
             %(tmp_epoch_num+1,opt['parse_method']) )
         # test
-        test_log = test_phase(opt,net,testloader,log_save_path=log_save_path)
+        test_log = test_phase(opt,net,testloader,cuda,log_save_path=log_save_path)

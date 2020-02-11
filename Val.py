@@ -17,7 +17,7 @@ from IOtools import txt_write
 from Network.class_func import get_local_count
 
 
-def test_phase(opt,net,testloader,log_save_path=None):
+def test_phase(opt,net,testloader,cuda=False,log_save_path=None):
     with torch.no_grad():
         net.eval()
         start = time()
@@ -28,7 +28,8 @@ def test_phase(opt,net,testloader,log_save_path=None):
         for j, data in enumerate(testloader):
             inputs , labels = data['image'], data['all_num']
             inputs,labels = inputs.type(torch.float32),labels.unsqueeze(1).type(torch.float32)
-            inputs, labels = inputs.cuda(), labels.cuda()
+            if cuda:
+                inputs, labels = inputs.cuda(), labels.cuda()
             # process with SSDCNet
             features = net(inputs)
             div_res = net.resample(features)
