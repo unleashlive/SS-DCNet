@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
+
 
 # Func1: change density map into count map
 # density map: batch size * 1 * w * h
@@ -24,8 +23,8 @@ def get_local_count(density_map,psize,pstride):
 
 
 # Func2: convert count to class (0->c-1)
-def Count2Class(count_map,label_indice):
-    if isinstance(label_indice,np.ndarray):
+def Count2Class(count_map, label_indice):
+    if isinstance(label_indice, np.ndarray):
         label_indice = torch.from_numpy(label_indice) 
     IF_gpu = torch.cuda.is_available()
     IF_ret_gpu = (count_map.device.type == 'cuda')        
@@ -33,7 +32,7 @@ def Count2Class(count_map,label_indice):
     cls_num = len(label_indice)+1
     cls_map = torch.zeros(count_map.size()).type(torch.LongTensor) 
     if IF_gpu:
-        count_map,label_indice,cls_map = count_map.cuda(),label_indice.cuda(),cls_map.cuda()
+        count_map, label_indice, cls_map = count_map.cuda(), label_indice.cuda(), cls_map.cuda()
     
     for i in range(cls_num-1):
         if IF_gpu:
@@ -46,7 +45,7 @@ def Count2Class(count_map,label_indice):
 
 
 # Func3: convert class (0->c-1) to count number
-def Class2Count(pre_cls,label_indice): 
+def Class2Count(pre_cls, label_indice):
     '''
     # --Input:
     # 1.pre_cls is class label range in [0,1,2,...,C-1]
@@ -81,4 +80,3 @@ def Class2Count(pre_cls,label_indice):
         pre_counts = pre_counts.cuda()
 
     return pre_counts
-

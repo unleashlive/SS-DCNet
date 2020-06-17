@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import math
 
+
 # --1.2.1
 class one_conv(nn.Module):
     def __init__(self, in_ch, out_ch, normaliz=False):
@@ -20,6 +21,7 @@ class one_conv(nn.Module):
     def forward(self, x):
         x = self.conv(x)
         return x
+
 
 # --1.2.2    
 class double_conv(nn.Module):
@@ -43,6 +45,7 @@ class double_conv(nn.Module):
     def forward(self, x):
         x = self.conv(x)
         return x
+
 
 # --1.2.3
 class three_conv(nn.Module):
@@ -96,6 +99,7 @@ class resconv2(nn.Module):
         else:
             x = x + rx
         return rx
+
 
 class up_res(nn.Module):
     def __init__(self, up_in_ch, up_out_ch,cat_in_ch, cat_out_ch,if_convt=False):

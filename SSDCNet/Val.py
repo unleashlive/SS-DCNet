@@ -1,20 +1,9 @@
 # -*- coding: utf-8 -*-
-import torch.nn as nn
 import torch
-import torch.optim as optim
-from torch.utils.data import  DataLoader
-import torch.nn.functional as F
+import math
 
-import os
-import numpy as np
 from time import time
-import math
-import pandas as pd
-import csv
-import math
-
-from IOtools import txt_write 
-from Network.class_func import get_local_count
+from .IOtools import txt_write
 
 
 def test_phase(opt,net,testloader,cuda=False,log_save_path=None):

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import torch
 import torch.nn.functional as F
-import numpy as np
 
 # merge low2high
 def count_merge_low2high_batch(clow,chigh,IF_avg=False,IF_p=False):
