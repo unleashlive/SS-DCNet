@@ -1,20 +1,24 @@
 import sys, os
-from pathlib import Path
+import scipy.io as sio
 import torch
 import numpy as np
-from Network.SSDCNet import SSDCNet_classify
-from time import time
-from PIL import Image
+
+from pathlib import Path
 from torchvision import transforms
-from load_data_V2 import get_pad
-import scipy.io as sio
+from PIL import Image
+
+from .Network.SSDCNet import SSDCNet_classify
+from .load_data_V2 import get_pad
+
 
 verbose = False
 cuda = False
 
+
 def vprint(*data):
     if verbose:
         print(*data)
+
 
 FILE_DIR = str(Path(sys.argv[0]).parent) + str(os.sep)
 FILE_DIR = os.path.abspath(FILE_DIR)

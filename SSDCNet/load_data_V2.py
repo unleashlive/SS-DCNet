@@ -7,23 +7,20 @@ author: xionghaipeng
 __author__='xhp'
 
 '''load the dataset'''
-#from __future__ import print_function, division
 import os
-import torch
-import numpy as np
-import glob#use glob.glob to get special flielist
+import glob #use glob.glob to get special flielist
 import scipy.io as sio#use to import mat as dic,data is ndarray
-# load image
+
+
 from PIL import Image
-# torch related
 from torch.utils.data import Dataset
 import torch
 import torch.nn.functional as F
 from torchvision import transforms
-# Ignore warnings
+
+
 import warnings
 warnings.filterwarnings("ignore")
-
 
 
 class Countmap_Dataset(Dataset):
